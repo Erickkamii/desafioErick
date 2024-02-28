@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      dockerfile: Dockerfile
+      context: ./angular-frontend
+      target: development
+    command: npm run start
+    volumes:
+      - ./front:/daedr/front/src/app
+      - /daedr/front/src/app/node_modules
+    ports:
+      - "4200:4200"
+    depends_on:
+      - api
+
+
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: ./kanban-api
+      target: development
+    volumes:
+      - ./kanban-api:/daedr/src/app
+      - /daedr/src/app/node_modules
+    command: npm run start:dev
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://usuario:senha@postgres:5432/bd
+      JWT_SECRET: hlaskdhaio1237891aa
+    ports:
+      - "3000:3000"
+
+  postgres:
+    image: postgres:14.4
+    environment:
+      POSTGRES_USER: usuario
+      POSTGRES_PASSWORD: senha
+      POSTGRES_DB: bd
+    ports:
+      - 35000:5432
+
+  postgres_admin:
+    image: dpage/pgadmin4:6.12
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: erick@admin.com
+      PGADMIN_DEFAULT_PASSWORD: melancia
+    ports:
+      - 5050:80

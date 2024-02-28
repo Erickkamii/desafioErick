@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@nestjs/platform-socket.io": "^10.3.3",
+    "@nestjs/websockets": "^10.3.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "socket.io": "^4.7.4"
+  }
+}
